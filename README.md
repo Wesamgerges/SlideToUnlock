@@ -1,4 +1,4 @@
-# SlideToUnlock Jquery Plugin
+# SlideToUnlock/Lock Jquery Plugin
 
 ### Usage
 ```
