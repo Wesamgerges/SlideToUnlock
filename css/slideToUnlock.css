@@ -1,0 +1,44 @@
+.slideToUnlock {   
+    position:relative;
+    text-align: center;
+
+    background-color:white;
+    height: 50px;
+    color: #692003;
+    font-size: 16px;
+    font-weight: 900;   
+   
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #eff3ea;
+    margin: 10px;
+}
+
+.progressBar {
+    position: absolute;
+    left:0;
+    top:0;
+    width: 0;
+    height: 100%; 
+      
+    background-color: rgba(8, 252, 20, 0.5);
+    border-radius: 25px;
+   } 
+
+.drag {
+    position: absolute;
+    width:50px;
+    left:0px;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid #cccccc;
+    background: #fff;
+    border-radius: 25px;
+    cursor: hand;
+    color: #692003;
+    font-size: 16px;
+    font-weight: 900;   
+    text-align: center;
+
+}
