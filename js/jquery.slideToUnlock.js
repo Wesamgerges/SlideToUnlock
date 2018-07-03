@@ -1,6 +1,6 @@
   /**
    * @license
-   * Copyright 2018 Google LLC. All Rights Reserved.
+   * Copyright Wesam Gerges. All Rights Reserved.
    * Licensed under the Apache License, Version 2.0 (the "License");
    * you may not use this file except in compliance with the License.
    * You may obtain a copy of the License at
@@ -15,116 +15,132 @@
    * =============================================================================
    */
 
-    class slideToUnlock {
-        constructor(el, options){
-            this.$el = el;
-            this.$drag;
-            this.start = false;
-            this.leftEdge;
-            this.rightEdge;
-            this.status = false;
-            this.mouseX ;
+  class slideToUnlock {
+    constructor(el, options){
+        this.$el = el;
+        this.$drag;
+        this.start = false;
+        this.leftEdge;
+        this.rightEdge;            
+        this.mouseX ;
 
-            this.settings = {
-                text    : "Slide To Unlock",
-                useData : false,
-                unlock: function(){console.log("unlock")},
-                lock  : function(){},
-                allowLocking : true
-            }
-
-            // Establish our default settings
-            this.settings =  Object.assign(this.settings, options);	
-            if(this.settings.useData){
-                this.settings.text = this.$el.data("unlock-text");
-            }
-
-            this.init();
-            return this;
-        };
-
-        init() {
-            this.$el.addClass('slideToUnlock');
-            this.leftEdge  = this.$el.offset().left;
-            this.rightEdge = this.leftEdge + this.$el.outerWidth();
-            
-            this.$el.text(this.settings.text);
-            this.$el.append("<div class='progressBar'></div>");
-            this.$el.append("<div class='drag'>  </div>");
-            
-            this.$drag = this.$el.find('.drag');
-            this.$progressBar = this.$el.find(".progressBar");
-            
-            this.$el.on("mousedown touchstart",  this.touchStart.bind(this));          
+        this.settings = {
+            text    : "Slide To Unlock",
+            useData : false,
+            unlock: function(){console.log("unlock")},
+            lock  : function(){},
+            allowLocking : true,
+            status: false
         }
 
-        touchStart(event = window.event){  
-            this.start = true;
-            $(document).on("mousemove touchmove",  this.touchMove.bind(this));
-            $(document).on("mouseup touchend",     this.touchEnd.bind(this));
-            this.mouseX = (event.type == 'mousedown' )? event.pageX : event.originalEvent.touches[0].pageX;
-          
-            event.preventDefault();
+        // Establish our default settings
+        this.settings =  Object.assign(this.settings, options);	
+        if(this.settings.useData){
+            this.settings.text = this.$el.data("unlock-text");
+            this.settings.status = this.$el.data("status");
         }
 
-        touchMove(event = window.event){ 
-            if(!this.start) return;               
-                var X = (event.type == 'mousemove' )? event.pageX : event.originalEvent.touches[0].pageX;
-                var changeX = ( X - this.mouseX );
-                var edge = this.$drag.offset().left + ( X - this.mouseX );
-                this.mouseX = X;
-                if(edge < this.leftEdge){
-                    this.touchEnd();
-                    this.settings.lock();
-                    this.start = false;
-                    this.status = false;                    
-                    return;
-                }
-
-                if(edge > this.rightEdge - this.$drag.outerWidth()){
-                    this.touchEnd();
-                    this.settings.unlock();
-                    this.status = true;
-                    this.start = false;                    
-                    return;
-                }
-
-                this.$drag.offset({left : edge });           
-                this.$progressBar.css({"width": edge - this.$el.offset().left + this.$drag.outerWidth() });
-
-                event.stopImmediatePropagation();
-        }
-
-        touchEnd(event = window.event){  
-            this.start = false;
-            this.mouseX = 0;           
-            if(!this.status){
-                this.$drag.animate({left : 0 });
-                this.$progressBar.animate({width : this.$drag.width()}, function(){
-                    this.$progressBar.css({width:0 });                                     
-                }.bind(this));
-            }
-            if(this.status){
-                this.$drag.animate({left: this.$el.outerWidth() - this.$drag.outerWidth() });
-                this.$progressBar.animate({"width": this.$el.outerWidth() });
-            }
-            $(document).off("mousemove touchmove");
-            $(document).off("mouseup touchend");
-            event.preventDefault();
-            event.stopImmediatePropagation();
-        }
+        this.init();
+        return this;
     };
-    /*
-    * Add it to Jquery
-    */
-    (function ( $ , window) {
-        $.fn.extend({
-            slideToUnlock: function(options) {
-                $.each(this, function(i, el) {
-                    var $el = $(el);
-                    $el.data(new slideToUnlock($el, options));
-                });
+
+    init() {
+        this.$el.addClass('slideToUnlock');
+        this.leftEdge  = this.$el.offset().left;
+        this.rightEdge = this.leftEdge + this.$el.outerWidth();
+        
+        this.$el.text(this.settings.text);
+        this.$el.append("<div class='progressBar'></div>");
+        this.$el.append("<div class='drag'>  </div>");
+        
+        this.$drag = this.$el.find('.drag');
+        this.$progressBar = this.$el.find(".progressBar");
+        
+        this.$el.on("mousedown touchstart",  this.touchStart.bind(this));    
+        
+        if(this.settings.status){
+            this.$drag.css({left: "auto", right: 0 });               
+            this.$progressBar.css({width: "100%"});
+        }
+    }
+
+    touchStart(event = window.event){  
+        this.start = true;
+        this.leftEdge  = Math.trunc(this.$el.offset().left);
+        this.rightEdge = Math.trunc(this.leftEdge + this.$el.outerWidth());
+        
+        $(document).on("mousemove touchmove",  this.touchMove.bind(this));
+        $(document).on("mouseup touchend",     this.touchEnd.bind(this));
+        this.mouseX = (event.type == 'mousedown' )? event.pageX : event.originalEvent.touches[0].pageX;
+      
+        event.preventDefault();
+    }
+
+    touchMove(event = window.event){ 
+        if(!this.start) return;             
+            var X = (event.type == 'mousemove' )? event.pageX : event.originalEvent.touches[0].pageX;
+            var changeX = ( X - this.mouseX );
+            var edge = Math.trunc(this.$drag.offset().left) + changeX;
+            this.mouseX = X; 
+            
+            if(edge < this.leftEdge ){console.log("less than")
+                this.touchEnd();
+                if(this.settings.status)
+                    this.settings.lock(this.$el);
+                this.start = false;
+                this.settings.status = false;                    
+                return;
             }
-        });
-    }( jQuery, window ));
+            
+            if(edge > this.rightEdge - this.$drag.outerWidth() ){                                   
+                this.touchEnd();
+                if(!this.settings.status)
+                    this.settings.unlock(this.$el);   
+                this.settings.status = true;
+                this.start = false;                
+                return;
+            }
+
+            this.$drag.offset({left : edge });           
+            this.$progressBar.css({"width": edge - this.$el.offset().left + this.$drag.outerWidth() });
+
+            event.stopImmediatePropagation();
+    }
+
+    touchEnd(event = window.event){  
+        this.start  = false;
+        this.mouseX = 0;       
+        console.log("end touch")
+
+        if(!this.settings.status){
+            this.$drag.animate({left : 0, "margin-left": 0 });
+            this.$progressBar.animate({width : this.$drag.width()}, function(){
+                this.$progressBar.css({width:0 });                                     
+            }.bind(this));
+        }
+
+        if(this.settings.status){
+            // this.$drag.css({left: "auto"})
+            this.$drag.animate({"left": "100%", "margin-left": "-50px"});
+            this.$progressBar.animate({width: "100%" });
+        }
+
+        $(document).off("mousemove touchmove");
+        $(document).off("mouseup touchend");
+        event.stopImmediatePropagation();
+    }
+};
+/*
+* Add it to Jquery
+*/
+(function ( $ , window) {
+    $.fn.extend({
+        slideToUnlock: function(options) {
+            $.each(this, function(i, el) {
+                var $el = $(el);
+                $el.data(new slideToUnlock($el, options));
+            });
+        }
+    });
+}( jQuery, window ));
 

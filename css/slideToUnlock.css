@@ -28,17 +28,16 @@
 .drag {
     position: absolute;
     width:50px;
-    left:0px;
+    left:0%;
     display: inline-block;
     height: 50px;
     line-height: 50px;
     border: 1px solid #cccccc;
     background: #fff;
     border-radius: 25px;
-    cursor: hand;
+    cursor: pointer;
     color: #692003;
     font-size: 16px;
     font-weight: 900;   
     text-align: center;
-
 }
