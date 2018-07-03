@@ -83,21 +83,23 @@
             var edge = Math.trunc(this.$drag.offset().left) + changeX;
             this.mouseX = X; 
             
-            if(edge < this.leftEdge ){console.log("less than")
-                this.touchEnd();
+            if(edge < this.leftEdge ){
+                
                 if(this.settings.status)
                     this.settings.lock(this.$el);
                 this.start = false;
-                this.settings.status = false;                    
+                this.settings.status = false;  
+                this.touchEnd();                  
                 return;
             }
             
             if(edge > this.rightEdge - this.$drag.outerWidth() ){                                   
-                this.touchEnd();
+                
                 if(!this.settings.status)
                     this.settings.unlock(this.$el);   
                 this.settings.status = true;
-                this.start = false;                
+                this.start = false;   
+                this.touchEnd();             
                 return;
             }
 
@@ -110,8 +112,6 @@
     touchEnd(event = window.event){  
         this.start  = false;
         this.mouseX = 0;       
-        console.log("end touch")
-
         if(!this.settings.status){
             this.$drag.animate({left : 0, "margin-left": 0 });
             this.$progressBar.animate({width : this.$drag.width()}, function(){
@@ -120,7 +120,6 @@
         }
 
         if(this.settings.status){
-            // this.$drag.css({left: "auto"})
             this.$drag.animate({"left": "100%", "margin-left": "-50px"});
             this.$progressBar.animate({width: "100%" });
         }
