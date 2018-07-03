@@ -31,7 +31,9 @@
 * change theme.
 * change width and height.
 * Works with touch as well as mouse.
-* Supported by most modern browsers
+* Supported by most modern browsers.
+* All built with ES6 standards.
+* Callback functions accepts this as parameter
 
 
 ### Prerequisites
