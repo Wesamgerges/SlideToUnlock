@@ -30,7 +30,7 @@ Check [demo](http://wesamgerges.com/slidetounlock/)
 
 ```
     $("div").slideToUnlock({
-        text: "Hello World!",
+        lockText: "Hello World!",
         allowToLock: true 
     });
 ```
