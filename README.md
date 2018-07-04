@@ -12,19 +12,17 @@ Check [demo](http://wesamgerges.com/slidetounlock/)
     $("div").slideToUnlock();
 ```
 ### Options
-* lockText: A string Change the default text
+* `lockText`: A string Change the default text
         default: Slide To Unlock
-* unlockText: A string Change the default text
+* `unlockText`: A string Change the default text
         default: Slide To Unlock       
-* useData : Boolean. Weather to use the data attribute
+* `useData` : Boolean. Weather to use the data attribute
         in the element to get the text and status
-* status: A boolean indeactes weather the inital state
+* `status`: A boolean indeactes weather the inital state
         is locked or unlocked.
-* unlockfn: A call back function fired when the item is unlocked.
-        the `this` variable is passed by default as `self`.
-* lockfn: A call back function fired when the item is locked.       
-        the `this` variable is passed by default as `self`.
-* allowToLock: a boolean value indecates if the 
+* `unlockfn`: A call back function fired when the item is unlocked. The `this` variable is passed by default as `self`.
+* `lockfn`: A call back function fired when the item is locked. The `this` variable is passed by default as `self`.
+* `allowToLock`: a boolean value indecates if the 
                 can lock back or not.
         default: true      
 
