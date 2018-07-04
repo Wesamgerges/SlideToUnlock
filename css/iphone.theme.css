@@ -1,0 +1,19 @@
+
+.locked {
+    font-size: 18px;
+    font-family: 'Microsoft Yahei', serif;      
+    background-color: rgb(168, 167, 167);   
+    color: white;
+}
+
+.locked_handle{
+    background-image: url("../img/right_arrow.png");  
+}  
+
+
+.unlocked {
+    background-color:rgb(128, 131, 128);
+}
+.unlocked_handle{
+    background-image: url("../img/left_arrow.png");   
+}  

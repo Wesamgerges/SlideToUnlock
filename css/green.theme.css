@@ -1,0 +1,13 @@
+.locked {
+    color: #692003;
+    font-size: 18px;
+    font-family: 'Microsoft Yahei', serif;      
+    background-color: #eff3ea;   
+}
+
+ 
+
+.unlocked {
+    background-color:rgba(8, 252, 20, 0.5);
+}
+

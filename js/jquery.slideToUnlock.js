@@ -25,10 +25,10 @@
         this.mouseX ;
 
         this.settings = {
-            text    : "Slide To Unlock",
+            // unlockText    : "Slide To Unlock",
             useData : false,
-            unlock: function(){console.log("unlock")},
-            lock  : function(){},
+            unlockfn: function(){console.log("unlock")},
+            lockfn  : function(){},
             allowLocking : true,
             status: false
         }
@@ -36,8 +36,22 @@
         // Establish our default settings
         this.settings =  Object.assign(this.settings, options);	
         if(this.settings.useData){
-            this.settings.text = this.$el.data("unlock-text");
+            if(!("unlockText" in this.settings) && this.$el.data("unlock-text")){
+                this.settings.unlockText = this.$el.data("unlock-text");         
+            }
+            if(!("lockText" in this.settings && this.$el.data("lock-text"))){
+                this.settings.lockText = this.$el.data("lock-text");
+            }
+
             this.settings.status = this.$el.data("status");
+        }
+
+        if(!("lockText" in this.settings)){
+            this.settings.lockText = "Slide To Unlock";
+        }
+        
+        if(!("unlockText" in this.settings)){
+            this.settings.unlockText = this.settings.lockText;            
         }
 
         this.init();
@@ -49,13 +63,16 @@
         this.leftEdge  = this.$el.offset().left;
         this.rightEdge = this.leftEdge + this.$el.outerWidth();
         
-        this.$el.text(this.settings.text);
-        this.$el.append("<div class='progressBar'></div>");
-        this.$el.append("<div class='drag'>  </div>");
+        this.$el.addClass("locked");
+        this.$el.append("<div class='progressBar unlocked'></div>");
+        this.$el.append("<div class='text'>" + this.settings.lockText + "</div>");
+        this.$el.append("<div class='drag locked_handle '>  </div>");
         
+        this.$text = this.$el.find('.text');
         this.$drag = this.$el.find('.drag');
         this.$progressBar = this.$el.find(".progressBar");
         
+
         this.$el.on("mousedown touchstart",  this.touchStart.bind(this));    
         
         if(this.settings.status){
@@ -83,20 +100,26 @@
             var edge = Math.trunc(this.$drag.offset().left) + changeX;
             this.mouseX = X; 
             
-            if(edge < this.leftEdge ){
-                
+            if(edge < this.leftEdge ){                
                 if(this.settings.status)
-                    this.settings.lock(this.$el);
+                    this.settings.lockfn(this.$el);
+                this.$text.text(this.settings.lockText);
+                this.$drag.removeClass('unlocked_handle').addClass('locked_handle');
                 this.start = false;
                 this.settings.status = false;  
                 this.touchEnd();                  
                 return;
             }
             
-            if(edge > this.rightEdge - this.$drag.outerWidth() ){                                   
-                
-                if(!this.settings.status)
-                    this.settings.unlock(this.$el);   
+            if(edge > this.rightEdge - this.$drag.outerWidth() ){                                                   
+                if(!this.settings.status){
+                    this.settings.unlockfn(this.$el);   
+                }
+                this.$text.text(this.settings.unlockText);
+                this.$drag.removeClass('locked_handle').addClass('unlocked_handle');
+                if(!this.settings.allowLocking){
+                    this.$el.off("mousedown touchstart");
+                }
                 this.settings.status = true;
                 this.start = false;   
                 this.touchEnd();             
@@ -114,9 +137,11 @@
         this.mouseX = 0;       
         if(!this.settings.status){
             this.$drag.animate({left : 0, "margin-left": 0 });
-            this.$progressBar.animate({width : this.$drag.width()}, function(){
-                this.$progressBar.css({width:0 });                                     
-            }.bind(this));
+            if(this.$progressBar.width() > this.$drag.width()){
+                this.$progressBar.animate({width : this.$drag.width()}, function(){
+                    this.$progressBar.css({width:0 });                                     
+                }.bind(this));
+            }
         }
 
         if(this.settings.status){
@@ -132,14 +157,13 @@
 /*
 * Add it to Jquery
 */
-(function ( $ , window) {
-    $.fn.extend({
-        slideToUnlock: function(options) {
-            $.each(this, function(i, el) {
-                var $el = $(el);
-                $el.data(new slideToUnlock($el, options));
-            });
-        }
-    });
-}( jQuery, window ));
+(function ( $ ) {
+
+    $.fn.slideToUnlock = function(options){
+        $.each(this, function(i, el) {            
+            new slideToUnlock($(el), options);
+        });
+        return this;
+    }
+}( jQuery ));
 

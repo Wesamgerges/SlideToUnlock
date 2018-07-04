@@ -26,6 +26,19 @@
     });
 ```
 
+You can change the width and the height
+
+backgroud color- you can use gradiant or even img
+text color, font, font-size and font weight
+
+
+progress bar background color
+
+color locked state and unlocked state
+
+simply
+theme: 'dark-theme'
+
 ### Features
 * Ability to lock and unlock
 * change theme.
