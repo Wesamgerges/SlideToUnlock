@@ -6,7 +6,7 @@ Check [demo](http://wesamgerges.com/slidetounlock/)
 ```
     <link href="css/slideToUnlock.css" rel="stylesheet">  
     <link href="css/green.theme.css" rel="stylesheet">  
-    <script src="jquery.slideToUnlock.js"></script>  
+    <script src="js/jquery.slideToUnlock.js"></script>  
 ```
 ```
     $("div").slideToUnlock();
