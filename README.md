@@ -1,4 +1,4 @@
-# SlideToUnlock/Lock Jquery Plugin
+# Slide To Unlock/Lock Jquery Plugin
 
 Check [demo](http://wesamgerges.com/slidetounlock/)
 
