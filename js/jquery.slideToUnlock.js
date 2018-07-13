@@ -73,7 +73,7 @@
         this.$progressBar = this.$el.find(".progressBar");
         
 
-        this.$el.on("mousedown touchstart",  this.touchStart.bind(this));    
+        this.$drag.on("mousedown touchstart",  this.touchStart.bind(this));    
         
         if(this.settings.status){
             this.$drag.css({left: "auto", right: 0 });               
