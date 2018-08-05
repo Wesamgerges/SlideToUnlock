@@ -29,7 +29,7 @@
             useData : false,
             unlockfn: function(){console.log("unlock")},
             lockfn  : function(){},
-            allowLocking : true,
+            allowToLock : true,
             status: false
         }
 
@@ -117,7 +117,7 @@
                 }
                 this.$text.text(this.settings.unlockText);
                 this.$drag.removeClass('locked_handle').addClass('unlocked_handle');
-                if(!this.settings.allowLocking){
+                if(!this.settings.allowToLock){
                     this.$el.off("mousedown touchstart");
                 }
                 this.settings.status = true;
