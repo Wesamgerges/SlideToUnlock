@@ -73,7 +73,7 @@
         this.$progressBar = this.$el.find(".progressBar");
         
 
-        this.$drag.on("mousedown touchstart",  this.touchStart.bind(this));    
+        this.$drag.on("mousedown.slideToUnlock touchstart.slideToUnlock",  this.touchStart.bind(this));
         
         if(this.settings.status){
             this.$drag.css({left: "auto", right: 0 });               
@@ -86,8 +86,8 @@
         this.leftEdge  = Math.trunc(this.$el.offset().left);
         this.rightEdge = Math.trunc(this.leftEdge + this.$el.outerWidth());
         
-        $(document).on("mousemove touchmove",  this.touchMove.bind(this));
-        $(document).on("mouseup touchend",     this.touchEnd.bind(this));
+        $(document).on("mousemove.slideToUnlock touchmove.slideToUnlock",  this.touchMove.bind(this));
+        $(document).on("mouseup.slideToUnlock touchend.slideToUnlock",     this.touchEnd.bind(this));
         this.mouseX = (event.type == 'mousedown' )? event.pageX : event.originalEvent.touches[0].pageX;
       
         event.preventDefault();
@@ -118,7 +118,7 @@
                 this.$text.text(this.settings.unlockText);
                 this.$drag.removeClass('locked_handle').addClass('unlocked_handle');
                 if(!this.settings.allowToLock){
-                    this.$el.off("mousedown touchstart");
+                    this.$drag.off("mousedown.slideToUnlock touchstart.slideToUnlock");
                 }
                 this.settings.status = true;
                 this.start = false;   
@@ -149,8 +149,8 @@
             this.$progressBar.animate({width: "100%" });
         }
 
-        $(document).off("mousemove touchmove");
-        $(document).off("mouseup touchend");
+        $(document).off("mousemove.slideToUnlock touchmove.slideToUnlock");
+        $(document).off("mouseup.slideToUnlock touchend.slideToUnlock");
         event.stopImmediatePropagation();
     }
 };
