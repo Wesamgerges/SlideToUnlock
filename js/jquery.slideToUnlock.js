@@ -39,7 +39,7 @@
             if(!("unlockText" in this.settings) && this.$el.data("unlock-text")){
                 this.settings.unlockText = this.$el.data("unlock-text");         
             }
-            if(!("lockText" in this.settings && this.$el.data("lock-text"))){
+            if(!("lockText" in this.settings) && this.$el.data("lock-text")){
                 this.settings.lockText = this.$el.data("lock-text");
             }
 
